@@ -7,7 +7,7 @@ WORKDIR /app
 COPY nestjs-cbc-api/package*.json ./
 RUN npm ci
 
-# Copy source code
+# Copy source code and prisma
 COPY nestjs-cbc-api/ ./
 
 # Generate Prisma Client
@@ -29,7 +29,7 @@ RUN npm ci --only=production
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY nestjs-cbc-api/prisma ./prisma
+COPY --from=builder /app/prisma ./prisma
 
 # Expose port
 EXPOSE 3002
